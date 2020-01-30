@@ -49,6 +49,23 @@ macro #endif?
 end macro
 
 include 'ti83plus.inc'
+iterate <name,instruction>, call,rst 28h, jump,call 50h
+	iterate separator, _,
+		macro b#separator#name? address*
+			instruction
+			dw address
+		end macro
+	end iterate
+end iterate
+macro apponerr? address*
+	local direct
+	direct := address
+	ld hl,direct
+	call 59h
+end macro
+macro appofferr?
+	call 5Ch
+end macro
 
 restruc equ?
 purge Ld
