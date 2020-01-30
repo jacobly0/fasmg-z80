@@ -1,0 +1,20 @@
+calminstruction ?! line&
+  local part
+loop:
+  arrange part, line
+  match part \ line, line
+  assemble part
+  jyes loop
+end calminstruction
+
+macro #ifdef?! variable
+	if? definite? variable
+end macro
+
+macro #ifndef?! variable
+	if? ~definite? variable
+end macro
+
+macro #endif?!
+	end? if?
+end macro

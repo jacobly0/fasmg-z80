@@ -1,0 +1,7 @@
+*~
+\#*#
+*.out
+bin/fasmg
+ti83plus.inc
+etc/*
+fasmg/*
