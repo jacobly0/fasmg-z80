@@ -112,10 +112,10 @@ macro format?.ti? clause&
 		end postpone
 	else
 		curpage = 0
-		pageof equ 1 metadataof
-		offsetof equ 0 scaleof
+		pageof? equ 1 metadataof
+		offsetof? equ 0 scaleof
 		macro @z80.word size*, value*
-			emit size: offsetof value
+			emit size: offsetof? value
 		end macro
 		macro page
 				db $$+$4000-$ dup 0
@@ -390,7 +390,7 @@ macro format?.ti? clause&
 						blocksize = pagesize and (blocksize - 1)
 					end if
 					load block: blocksize from page: pagebase + index shl 5
-					intelhex blocksize, offsetof pagebase + index shl 5, 0, block
+					intelhex blocksize, offsetof? pagebase + index shl 5, 0, block
 				end repeat
 			end irpv
 			intelhex , , 1
