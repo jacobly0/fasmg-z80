@@ -1,5 +1,5 @@
 #!/bin/sed -f
-# usage: ./ti83plus.sed ti83plus.inc > ti83plus.inc
+# usage: ./ti83plus.sed ti83plus.inc > ti83plusg.inc
 1s/^/define ti? ti\nnamespace ti?\n/
 $s/$/\nend namespace/
 s/^[#.][^\n]*//
