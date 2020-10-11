@@ -50,7 +50,7 @@ end macro
 
 include 'ti83plus.inc'
 iterate <name,instruction>, call,rst 28h, jump,call 50h
-	iterate separator, _,
+	iterate separator, , _
 		macro b#separator#name? address*
 			instruction
 			dw address
