@@ -1,5 +1,5 @@
 macro format?.ti? clause&
-	local all, checkloc, checksum, cplx, data, exec, flag, sign, head, name, nameloc, process, prot, temp, type, ext, var, pagebase, area, curpage, pages, numpages, size
+	local all, checkloc, checksum, cplx, data, exec, flag, sign, head, name, nameloc, process, prot, temp, type, ext, var, pagebase, area, curpage, pages, numpages, appsize
 	macro process: setting
 		match first rest, setting
 			process first
@@ -133,7 +133,7 @@ macro format?.ti? clause&
 			pages equ area
 			assert lengthof name <= 8
 			db $80,$0F
-			dd (size - 6) bswap 4
+			dd (appsize - 6) bswap 4
 			db $80,$12,1,4
 			db $80,$21,1
 			db $80,$31,1
@@ -154,7 +154,7 @@ macro format?.ti? clause&
 			dw 0,0,0,0,0,0,0,0
 
 		postpone
-				size := curpage shl 14 + $ - $$
+				appsize := curpage shl 14 + $ - $$
 			end virtual
 			numpages := curpage + 1
 		end postpone
@@ -340,7 +340,7 @@ macro format?.ti? clause&
 									padding = 0
 								end if
 								if blocksize <= 56
-									padding = padding or size shl (512 - 64 + 3)
+									padding = padding or appsize shl (512 - 64 + 3)
 								end if
 							end if
 							load block: blocksize from page: pagebase + index shl 6
