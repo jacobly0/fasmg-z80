@@ -16,7 +16,7 @@ before_install:
 
 before_script:
   - bin/install_fasmg
-  - bin/fetch_ti84pce
+  - bin/fetch_ti83plus
 
 script:
   - tests/test
