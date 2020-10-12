@@ -39,6 +39,12 @@ element sp?: @z80.wreg * 006o + 060o
 element af?: @z80.wreg * 001o + 060o
 element af'? ;'
 
+calminstruction @z80.byte value*
+	proxy value
+	compute value, value
+	emit 1, @value
+end calminstruction
+
 calminstruction dw? data*&
 	proxy current
 	local count, sequence, duplicate
@@ -407,7 +413,8 @@ macro ?! isreg: metadata 1 element 1 eq @z80
 		jno errarguments
 		indexprefix lhs
 		compute opcode, lhs metadata 1 scale 0 shl 3 and 070o or 006o
-		emit 1: @opcode, @rhs
+		emit 1: @opcode
+		execute =@z80.=byte @rhs
 		exit
 	notbyte:
 		check lhs isreg.wreg & lhs metadata 1 scale 1 and 004o
@@ -450,7 +457,7 @@ macro ?! isreg: metadata 1 element 1 eq @z80
 		indexprefix lhs
 		emit 1: 066o
 		indexoffset lhs
-		emit 1: @rhs
+		execute =@z80.=byte @rhs
 		exit
 	notstoretowordaccumulator:
 		check lhs metadata 1 scale 0 < 040o & rhs eq a?
@@ -569,7 +576,8 @@ macro ?! isreg: metadata 1 element 1 eq @z80
 		indexoffset rhs
 		exit
 	immediate:
-		emit 1: 306o, @rhs
+		emit 1: 306o
+		execute =@z80.=byte @rhs
 		exit
 	errindirection:
 		err 'invalid indirection'
@@ -622,7 +630,8 @@ macro ?! isreg: metadata 1 element 1 eq @z80
 				indexoffset rhs
 				exit
 			immediate:
-				emit 1: immediateencoding, @rhs
+				emit 1: immediateencoding
+				execute =@z80.=byte @rhs
 				exit
 			errindirection:
 				err 'invalid indirection'
@@ -664,7 +673,8 @@ macro ?! isreg: metadata 1 element 1 eq @z80
 				indexoffset lhs
 				exit
 			immediate:
-				emit 1: immediateencoding, @lhs
+				emit 1: immediateencoding
+				execute =@z80.=byte @lhs
 				exit
 			errindirection:
 				err 'invalid indirection'
@@ -917,7 +927,8 @@ macro ?! isreg: metadata 1 element 1 eq @z80
 	immediate:
 		check rhs eq a?
 		jno errarguments
-		emit 1: 323o, @lhs
+		emit 1: 323o
+		execute =@z80.=byte @lhs
 		exit
 	errindirection:
 		err 'invalid indirection'
@@ -949,7 +960,8 @@ macro ?! isreg: metadata 1 element 1 eq @z80
 	immediate:
 		check lhs eq a?
 		jno errarguments
-		emit 1: 333o, @rhs
+		emit 1: 333o
+		execute =@z80.=byte @rhs
 		exit
 	errindirection:
 		err 'invalid indirection'
