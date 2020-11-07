@@ -80,16 +80,10 @@ repeatend:
 	jyes loop
 end calminstruction
 
-calminstruction rw? count*
-	emit =word?: count =dup ?
+calminstruction (label) dw? parameters&
+	execute =label label: =word?
+	execute =dw? parameters
 end calminstruction
-
-iterate name, dw, rw
-	calminstruction (label) name? parameters&
-		execute =label label: =word?
-		execute =name? parameters
-	end calminstruction
-end iterate
 
 calminstruction @z80.word size*, value*
 	proxy size, value
