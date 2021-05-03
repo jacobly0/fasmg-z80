@@ -37,13 +37,19 @@ macro ?!
 		jno loop
 	end calminstruction
 
-	calminstruction #define?! variable*
+	calminstruction #define? variable*&
 		proxy isdefined
 		local value, name
 		match variable value?, variable
 		arrange name, @isdefined.variable
 		publish name, isdefined
 		execute =define? variable value
+	end calminstruction
+
+	calminstruction #undef? variable*
+		proxy isdefined
+		execute =restore? variable
+		execute =restore? @isdefined.variable
 	end calminstruction
 
 	calminstruction #ifdef?! variable*
