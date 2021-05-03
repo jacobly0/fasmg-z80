@@ -1,19 +1,40 @@
 macro ?!
-	purge ?
 	local isdefined
 	isdefined := 0
 
+	purge ?
 	calminstruction ?! line&
-		local part
-		jump enter
+		proxy op
+		local part, lhs, op, rhs
 	loop:
-		match .part, part
-		assemble part
-	enter:
 		match part? \ line?, line
-		jyes loop
-		match .line, line
-		assemble line
+		jyes notdone
+		arrange part, line
+		arrange line,
+	notdone:
+		match .part, part
+		jump operators
+	operator:
+		arrange part, lhs op rhs
+	operators:
+		arrange op, =shl?
+		match lhs =<=< rhs, part
+		jyes operator
+		arrange op, =shr?
+		match lhs =>=> rhs, part
+		jyes operator
+		arrange op, =and?
+		match lhs =& rhs, part
+		jyes operator
+		arrange op, =or?
+		match lhs =| rhs, part
+		jyes operator
+		arrange op, =xor?
+		match lhs =^ rhs, part
+		jyes operator
+		assemble part
+		match , line
+		jno loop
 	end calminstruction
 
 	calminstruction #define?! variable*
