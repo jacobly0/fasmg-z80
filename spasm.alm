@@ -1,20 +1,41 @@
-calminstruction ?! line&
-  local part
-loop:
-  arrange part, line
-  match part \ line, line
-  assemble part
-  jyes loop
-end calminstruction
+macro ?!
+	purge ?
+	local isdefined
+	isdefined := 0
 
-macro #ifdef?! variable
-	if? definite? variable
-end macro
+	calminstruction ?! line&
+		local part
+		jump enter
+	loop:
+		match .part, part
+		assemble part
+	enter:
+		match part? \ line?, line
+		jyes loop
+		match .line, line
+		assemble line
+	end calminstruction
 
-macro #ifndef?! variable
-	if? ~definite? variable
-end macro
+	calminstruction #define?! variable*
+		proxy isdefined
+		local value, name
+		match variable value?, variable
+		arrange name, @isdefined.variable
+		publish name, isdefined
+		execute =define? variable value
+	end calminstruction
 
-macro #endif?!
-	end? if?
+	calminstruction #ifdef?! variable*
+		proxy isdefined
+		execute =if? =definite? @isdefined.variable
+	end calminstruction
+
+	calminstruction #ifndef?! variable*
+		proxy isdefined
+		execute =if? ~=definite? @isdefined.variable
+	end calminstruction
+
+	calminstruction #endif?!
+		execute =end? =if?
+	end calminstruction
 end macro
