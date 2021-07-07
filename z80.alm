@@ -270,7 +270,8 @@ macro ?! isreg: metadata 1 element 1 eq @z80
 		compute offset, lhs - $ - 2
 		check -200o <= offset & offset < 200o
 		jno errrange
-		emit 1: 020o, @offset
+		emit 1: 020o
+		execute =@z80.=byte @offset
 		exit
 	errindirection:
 		err 'invalid indirection'
@@ -294,13 +295,15 @@ macro ?! isreg: metadata 1 element 1 eq @z80
 		check -200o <= offset & offset < 200o
 		jno errrange
 		compute opcode, lhs metadata 1 scale 0 and 030o or 040o
-		emit 1: @opcode, @offset
+		emit 1: @opcode
+		execute =@z80.=byte @offset
 		exit
 	unconditional:
 		compute offset, lhs - $ - 2
 		check -200o <= offset & offset < 200o
 		jno errrange
-		emit 1: 030o, @offset
+		emit 1: 030o
+		execute =@z80.=byte @offset
 		exit
 	errindirection:
 		err 'invalid indirection'
@@ -335,10 +338,12 @@ macro ?! isreg: metadata 1 element 1 eq @z80
 		      lhs metadata 1 scale 0 and 047o = 001o
 		jno farconditional
 		compute opcode, lhs metadata 1 scale 0 and 030o or 040o
-		emit 1: @opcode, @offset
+		emit 1: @opcode
+		execute =@z80.=byte @offset
 		jump after
 	nearunconditional:
-		emit 1: 030o, @offset
+		emit 1: 030o
+		execute =@z80.=byte @offset
 		jump after
 	far:
 		match , lhs
